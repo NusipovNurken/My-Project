@@ -78,7 +78,9 @@ const Options = ({ setTextFromOptionsComponent }) => {
             <label for="timeSnack">Are you a good cook?</label>
             <select
               name="timeSnack"
-              id="timeSnack"            >
+              id="timeSnack"
+              className="w-[200px] h-[35px] rounded-3xl border-black border-2 pl-10"
+            >
               <option value="Medium rare-46 до 50">Medium rare </option>
               <option value="Medium- от 52 до 57">Medium </option>
               <option value="Medium Well-от 60 до 65">Medium Well</option>
@@ -92,10 +94,7 @@ const Options = ({ setTextFromOptionsComponent }) => {
             <input
               onChange={(e) => setTimeLunch(e.target.value)}
               type="text"
-
-              onChange={(e) => setTimeSnack(e.target.value)}
               className="w-[200px] h-[35px] rounded-3xl border-black border-2 pl-5"
-              className="w-[200px] h-[35px] rounded-2xl  border-black border-2 pl-4"
               placeholder="select type of dish"
             />
           </div>

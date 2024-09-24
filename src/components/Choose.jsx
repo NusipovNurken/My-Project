@@ -6,6 +6,7 @@ const Choose = () => {
   const [textFromOptionsComponent, setTextFromOptionsComponent] = useState();
 
   const apikey = import.meta.env.VITE_API_KEY;
+  const apiurl = import.meta.env.VITE_API_URL;
 
   const collectChooses = () => {
     let text =
@@ -15,6 +16,7 @@ const Choose = () => {
     return text;
   };
   const [urlOfImage, setUrlOfImage] = useState("");
+  const [generatedText, setGeneretedText] = useState('')
 
   const ingredientsData = [
     { name: "Meat", imageSrc: "/images/foods/meat.png" },
@@ -37,6 +39,33 @@ const Choose = () => {
   const handleIngredientClick = (ingredient) => {
     setGtpPromptText([...gtpPromptText, ingredient.name]);
   };
+  const generateText = async () => {
+    console.log ("generating text...");
+    let prompt = "сенегрируй мне блюдо с этими ингредиентами: суп и мясо";
+
+    try {
+      const response = await fetch(apiurl, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apikey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: prompt,
+            max_tokens:350,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log('data', data)
+      const text= data.choices[0].text;
+
+      setGeneretedText(text)
+    
+    }catch(error){
+    console.error(error);
+  }
+}
 
   const generateImage = async (promptTextForImage) => {
     const options = {
@@ -63,10 +92,17 @@ const Choose = () => {
       setUrlOfImage(data.data[0].url);
 
       console.log("urlOfImage " + urlOfImage);
+
       setImageUrl(urlOfImage);
     } catch (error) {
       console.error(error);
     }
+
+    // try{
+    //   generateImage()
+    // }catch(error){
+    //   console.error(error);
+    // }
   };
 
   return (
@@ -89,15 +125,17 @@ const Choose = () => {
       </div>
       <img src={urlOfImage} alt="image" width={400} />
       <button
-        onClick={() => generateImage(collectChooses())}
+        onClick={() => generateText()}
         className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400"
       >
         Generate Dish
       </button>
       <p>textFromOptionsComponent: {textFromOptionsComponent}</p>
+      <p>text: {generatedText}</p>
       <Options setTextFromOptionsComponent={setTextFromOptionsComponent} />
     </div>
   );
 };
+
 
 export default Choose;
