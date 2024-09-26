@@ -2,8 +2,8 @@ import "../index.css";
 import food from "../../public/images/food.png";
 const Infoblock = () => {
   return (
-    <div className="w-full h-[400px]   flex flex-col md:flex-row justify-evenly items-center pl-10 pr-10 ">
-      <div className="w-[300px] p-20" >
+    <div className="w-full bg-emerald-300 flex flex-col md:flex-row justify-evenly items-center pl-10 pr-10 ">
+      <div className="min-w-[300px] max-w-[500px] pt-20">
         <div className="space-y-3">
           <h1 className="text-xl font-bold">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis,

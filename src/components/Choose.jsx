@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Ingredient from "./Ingredient";
 import Options from "./Options";
-
+import loading from "../../public/loading.gif";
 const Choose = () => {
   const [textFromOptionsComponent, setTextFromOptionsComponent] = useState();
 
@@ -17,6 +17,7 @@ const Choose = () => {
   };
   const [urlOfImage, setUrlOfImage] = useState("");
   const [generatedText, setGeneretedText] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
 
   const ingredientsData = [
     { name: "Meat", imageSrc: "/images/foods/meat.png" },
@@ -40,6 +41,7 @@ const Choose = () => {
     setGtpPromptText([...gtpPromptText, ingredient.name]);
   };
   const generateText = async () => {
+    setIsLoading(true);
     console.log ("generating text...");
     let prompt = "сенегрируй мне блюдо с этими ингредиентами: суп и мясо";
 
@@ -61,6 +63,8 @@ const Choose = () => {
       const text= data.choices[0].text;
 
       setGeneretedText(text)
+        setIsLoading(false);
+
     
     }catch(error){
     console.error(error);
@@ -92,8 +96,8 @@ const Choose = () => {
       setUrlOfImage(data.data[0].url);
 
       console.log("urlOfImage " + urlOfImage);
-
       setImageUrl(urlOfImage);
+     
     } catch (error) {
       console.error(error);
     }
@@ -127,8 +131,19 @@ const Choose = () => {
       <button
         onClick={() => generateText()}
         className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400"
+        disabled={isLoading}
       >
-        Generate Dish
+        {isLoading ? (
+          <img
+            src={loading}
+            width={50}
+            height={50}
+            className=""
+            alt="Loading"
+          />
+        ) : (
+          "Generate Dish"
+        )}
       </button>
       <p>textFromOptionsComponent: {textFromOptionsComponent}</p>
       <p>text: {generatedText}</p>
