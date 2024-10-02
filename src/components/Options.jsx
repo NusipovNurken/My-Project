@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 
 const Options = ({ setTextFromOptionsComponent }) => {
-    
-    const [timeFood, setTimeFood] = useState("");
-    const [timeMeal, setTimeMeal] = useState("");
-    const [timeDinner, setTimeDinner] = useState("");
-    const [timeSnack, setTimeSnack] = useState("");
-    const [timeBreakfast, setTimeBreakfast] = useState("");
-    const [timeLunch, setTimeLunch] = useState("");
-  
+  const [timeFood, setTimeFood] = useState("");
+  const [timeMeal, setTimeMeal] = useState("");
+  const [timeDinner, setTimeDinner] = useState("");
+  const [timeSnack, setTimeSnack] = useState("");
+  const [timeBreakfast, setTimeBreakfast] = useState("");
+  const [timeLunch, setTimeLunch] = useState("");
 
   const changeTextOptions = () => {
     setTextFromOptionsComponent(
@@ -21,13 +19,13 @@ const Options = ({ setTextFromOptionsComponent }) => {
   }, [timeFood, timeMeal, timeDinner, timeSnack, timeBreakfast, timeLunch]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center  h-[300px] bg-gray-400  ">
+    <div className="w-full flex flex-col items-center justify-center  bg-gray-400 pt-10 pb-10 ">
       <div className="text-center mb-10  text-black">
         <h3 className="font-bold"> Options</h3>
         <p>Lorem ipsum dolor sit amet.</p>
       </div>
 
-      <div className="flex space-x-20">
+      <div className="flex gap-10 justify-center flex-wrap">
         <div className="flex flex-col gap-5 text-black ">
           <div className="flex flex-col">
             <label for="dish">What dish you want to cook?</label>

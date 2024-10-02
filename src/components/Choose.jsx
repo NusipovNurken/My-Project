@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Ingredient from "./Ingredient";
 import Options from "./Options";
 import loading from "../../public/loading.gif";
+import GenerationResuIt from "./GenerationResuIt";
 const Choose = () => {
   const [textFromOptionsComponent, setTextFromOptionsComponent] = useState();
 
@@ -16,7 +17,7 @@ const Choose = () => {
     return text;
   };
   const [urlOfImage, setUrlOfImage] = useState("");
-  const [generatedText, setGeneretedText] = useState('')
+  const [generatedText, setGeneretedText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const ingredientsData = [
@@ -42,34 +43,33 @@ const Choose = () => {
   };
   const generateText = async () => {
     setIsLoading(true);
-    console.log ("generating text...");
+    console.log("generating text...");
     let prompt = "сенегрируй мне блюдо с этими ингредиентами: суп и мясо";
 
     try {
       const response = await fetch(apiurl, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${apikey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: prompt,
-            max_tokens:350,
-          }),
-        }
-      );
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apikey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          max_tokens: 350,
+        }),
+      });
       const data = await response.json();
-      console.log('data', data)
-      const text= data.choices[0].text;
+      console.log("data", data);
+      const text = data.choices[0].text;
 
-      setGeneretedText(text)
-        setIsLoading(false);
+      setGeneretedText(text);
 
-    
-    }catch(error){
-    console.error(error);
-  }
-}
+      await generateImage(collectChooses());
+      setIsLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const generateImage = async (promptTextForImage) => {
     const options = {
@@ -97,9 +97,11 @@ const Choose = () => {
 
       console.log("urlOfImage " + urlOfImage);
       setImageUrl(urlOfImage);
-     
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
+      alert('sorry,generation failed')
+
     }
 
     // try{
@@ -110,15 +112,18 @@ const Choose = () => {
   };
 
   return (
-    <div className="flex flex-wrap">
-      {ingredientsData.map((ingredient, index) => (
-        <Ingredient
-          key={index}
-          imageSrc={ingredient.imageSrc}
-          // isSelected={selectedIngredients.includes(ingredient)}
-          onClick={() => handleIngredientClick(ingredient)}
-        />
-      ))}
+    <div className="flex justify-center flex-wrap">
+      <div className="flex max-w-[1000px] justify-center flex-wrap mr-5 ml-5">
+        {ingredientsData.map((ingredient, index) => (
+          <Ingredient
+            key={index}
+            imageSrc={ingredient.imageSrc}
+            // isSelected={selectedIngredients.includes(ingredient)}
+            onClick={() => handleIngredientClick(ingredient)}
+          />
+        ))}
+      </div>
+
       <div>
         <h3>Selected Ingredients:</h3>
         <ul>
@@ -127,7 +132,7 @@ const Choose = () => {
           ))}
         </ul>
       </div>
-      <img src={urlOfImage} alt="image" width={400} />
+      {/* <img src={urlOfImage} alt="image" width={400} /> */}
       <button
         onClick={() => generateText()}
         className="px-4 h-[50px] m-4 rounded-2xl bg-indigo-400"
@@ -146,11 +151,12 @@ const Choose = () => {
         )}
       </button>
       <p>textFromOptionsComponent: {textFromOptionsComponent}</p>
-      <p>text: {generatedText}</p>
+      {/* <p>text: {generatedText}</p> */}
       <Options setTextFromOptionsComponent={setTextFromOptionsComponent} />
+
+      <GenerationResuIt urlOfImage={urlOfImage} generatedText={generatedText} />
     </div>
   );
 };
-
 
 export default Choose;

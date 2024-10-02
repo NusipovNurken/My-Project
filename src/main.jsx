@@ -6,6 +6,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainPage from './pages/mainPage'
 import GenerationPage from './pages/generationPage'
 import pageNotFound from './pages/pageNotFound'
+import About from './pages/about'
+
 
 const router = createBrowserRouter([
   { path:'/',
@@ -14,6 +16,8 @@ const router = createBrowserRouter([
   { path:'/generation',
     element: <GenerationPage/>
    },
+   { path:'/about',
+  element: <About/>}
 ])
 createRoot(document.getElementById('root')).render(
   <StrictMode>
